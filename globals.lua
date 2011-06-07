@@ -6,7 +6,7 @@ globals = {
     zoom_step           = 0.1,
     max_cmd_history     = 100,
     max_srch_history    = 100,
- -- proxy must now be set through proxy command; environment variable is broken
+ -- http_proxy          = "http://example.com:3128",
     default_window_size = "800x600",
     term                = "x-terminal-emulator",
 
