@@ -111,11 +111,17 @@ require "go_up"
 
 -- }}}
 
+-- {{{ Overrides
+
+require "speeddial"
+
+-- }}}
+
 -----------------------------
 -- End user script loading --
 -----------------------------
 
--- {{{ User
+-- {{{ Session
 
 -- Restore last saved session
 local w = (session and session.restore())
@@ -133,11 +139,5 @@ end
 ------------------------
 -- End user overrides --
 ------------------------
-
--- {{{ Overrides
-
---require "speeddial"
-
--- }}}
 
 -- vim: et:sw=4:ts=8:sts=4:tw=80
