@@ -234,6 +234,39 @@ webview.init_funcs = {
             info("Requesting: %s", uri)
             -- Return false to cancel the request.
         end)
+
+        -- cache the page favicon to be used as window icon
+        icons = icons or setmetatable({}, { __mode = "k" })
+        view:add_signal("load-status", function(v, status)
+            if status == "finished" then
+                local favicon_url =
+                    webview.methods.eval_js_from_file(v, w, lousy.util.find_data("scripts/favicon-url.js"))
+                favicon_url = require("socket.url").absolute(v.uri, favicon_url)
+
+                -- use wget to download and cache the favicon, and look for its path
+                local _, _, wget_output = luakit.spawn_sync(string.format(
+                    "wget --timestamping --force-directories --protocol-directories"..
+                        " --directory-prefix=%q %q",
+                    luakit.cache_dir.."/favicon", favicon_url))
+
+                -- the second-to-last line may contain the path wrapped in ` '
+                local lines = lousy.util.string.split(wget_output, "\n")
+                local path_line = lines[#lines - 2]
+                -- warning! match might be locale dependend
+                local favicon_path = string.match(path_line, "“([^']+)”")
+
+                -- store the icon in a table
+                if favicon_path then
+                    icons[v] = favicon_path
+                end
+            end
+
+            -- use the current webview's icon for the window
+            if w:is_current(v) then
+                w:update_win_icon(v)
+            end
+        end)
+
     end,
 
     -- Set dark default page
@@ -248,7 +281,7 @@ webview.init_funcs = {
 
     -- show GTK theme background color
     set_win_trans = function (view, w)
-        view:set_property("transparent", true)
+        view:set_property("transparent", false)
     end,
 
 }

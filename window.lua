@@ -141,6 +141,7 @@ window.init_funcs = {
             w:update_buf()
             w:update_ssl(view)
             w:update_hist(view)
+            w:update_win_icon(view)
         end)
         w.tabs:add_signal("page-reordered", function (nbook, view, idx)
             w:update_tab_count()
@@ -500,6 +501,12 @@ window.methods = {
             hist:show()
         else
             hist:hide()
+        end
+    end,
+
+    update_win_icon = function (w, view)
+        if icons[view] then
+            w.win.icon = icons[view]
         end
     end,
 
