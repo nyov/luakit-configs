@@ -1,6 +1,14 @@
+--[[ this is                  __           __   ____ 
+  ___ __ _____ _  __ _ ___   / /__ _____ _/ /__/_/ /_
+ / _ | // / _ \ |/ /|/(_-<  / // // / _ `/  '_/ / __/
+/_//_|_, /\___/___/  /___/ /_/ \_,_/\_,_/_/\_|_/\__/ 
+    /___/                                             ]]
+
 -----------------------------------------------------------------------
 -- luakit configuration file, more information at http://luakit.org/ --
 -----------------------------------------------------------------------
+
+-- {{{ Libs
 
 -- Load library of useful functions for luakit
 require "lousy"
@@ -34,9 +42,13 @@ require "modes"
 -- ("$XDG_CONFIG_HOME/luakit/binds.lua" or "/etc/xdg/luakit/binds.lua")
 require "binds"
 
+-- }}}
+
 ----------------------------------
 -- Optional user script loading --
 ----------------------------------
+
+-- {{{ User Libs
 
 -- Add sqlite3 cookiejar
 require "cookies"
@@ -69,6 +81,9 @@ require "bookmarks"
 require "downloads"
 require "downloads_chrome"
 
+-- // download dir
+downloads.default_dir = os.getenv("HOME") .. "/downloads"
+
 -- Add vimperator-like link hinting & following
 -- (depends on downloads)
 require "follow"
@@ -94,9 +109,13 @@ require "go_input"
 require "go_next_prev"
 require "go_up"
 
+-- }}}
+
 -----------------------------
 -- End user script loading --
 -----------------------------
+
+-- {{{ User
 
 -- Restore last saved session
 local w = (session and session.restore())
@@ -108,5 +127,17 @@ else
     -- Or open new window
     window.new(uris)
 end
+
+-- }}}
+
+------------------------
+-- End user overrides --
+------------------------
+
+-- {{{ Overrides
+
+--require "speeddial"
+
+-- }}}
 
 -- vim: et:sw=4:ts=8:sts=4:tw=80

@@ -445,7 +445,9 @@ window.methods = {
             loaded:hide()
         else
             loaded:show()
-            local text = string.format("(%d%%)", p * 100)
+            local pbar2 = {"▁","▂","▃","▄","▅","▆","▇","█"}
+            local pchar = pbar2[(math.floor(p*100)%#pbar2)+1]
+            local text = string.format("(%d%% %s)", p * 100, pchar)
             if loaded.text ~= text then loaded.text = text end
         end
     end,
@@ -473,15 +475,15 @@ window.methods = {
         local ssl = w.sbar.r.ssl
         if trusted ~= nil and not w.checking_ssl then
             ssl.fg = theme.notrust_fg
-            ssl.text = "(nocheck)"
+            ssl.text = "[SSL unchecked]"
             ssl:show()
         elseif trusted == true then
             ssl.fg = theme.trust_fg
-            ssl.text = "(trust)"
+            ssl.text = "[SSL TRUST]"
             ssl:show()
         elseif trusted == false then
             ssl.fg = theme.notrust_fg
-            ssl.text = "(notrust)"
+            ssl.text = "[SSL untrusted]"
             ssl:show()
         else
             ssl:hide()

@@ -8,7 +8,7 @@ globals = {
     max_srch_history    = 100,
  -- proxy must now be set through proxy command; environment variable is broken
     default_window_size = "800x600",
-    term = "x-terminal-emulator",
+    term                = "x-terminal-emulator",
 
  -- Disables loading of hostnames from /etc/hosts (for large host files)
  -- load_etc_hosts      = false,
@@ -45,6 +45,9 @@ soup.set_property("ssl-strict", false)
 cookie_policy = { always = 0, never = 1, no_third_party = 2 }
 soup.set_property("accept-policy", cookie_policy.always)
 
+-- Set default language
+soup.set_property("accept-language", "en; q=1.0, de; q=0.5")
+
 -- List of search engines. Each item must contain a single %s which is
 -- replaced by URI encoded search terms. All other occurances of the percent
 -- character (%) may need to be escaped by placing another % before or after
@@ -53,6 +56,7 @@ soup.set_property("accept-policy", cookie_policy.always)
 search_engines = {
     luakit      = "http://luakit.org/search/index/luakit?q=%s",
     google      = "http://google.com/search?q=%s",
+    scroogle    = "https://ssl.scroogle.org/cgi-bin/nbbwssl.cgi?Gw=%s",
     duckduckgo  = "http://duckduckgo.com/?q=%s",
     wikipedia   = "http://en.wikipedia.org/wiki/Special:Search?search=%s",
     debbugs     = "http://bugs.debian.org/%s",
@@ -60,8 +64,8 @@ search_engines = {
     sourceforge = "http://sf.net/search/?words=%s",
 }
 
--- Set google as fallback search engine
-search_engines.default = search_engines.google
+-- Set fallback / default search engine
+search_engines.default = search_engines.scroogle
 -- Use this instead to disable auto-searching
 --search_engines.default = "%s"
 

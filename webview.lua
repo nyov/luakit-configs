@@ -235,6 +235,22 @@ webview.init_funcs = {
             -- Return false to cancel the request.
         end)
     end,
+
+    -- Set dark default page
+    set_dark = function (view, w)
+        view:add_signal("navigation-request", function (_, uri)
+            if uri == "about:blank" then
+                view:load_string("<html><head><style>body { background-color:#222; }</style></head><body></body></html>", "about:blank")
+                return true
+            end
+        end)
+    end,
+
+    -- show GTK theme background color
+    set_win_trans = function (view, w)
+        view:set_property("transparent", true)
+    end,
+
 }
 
 -- These methods are present when you index a window instance and no window
