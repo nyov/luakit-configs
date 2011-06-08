@@ -10,6 +10,15 @@
 
 -- {{{ Libs
 
+-- Add overrides to path
+-- os.getenv("XDG_CONFIG_HOME") undefined
+package.path =
+    os.getenv("HOME") .. "/.config/luakit/config/?.lua;"
+    .. os.getenv("HOME") .. "/.config/luakit/config/?/init.lua;"
+    .. os.getenv("HOME") .. "/.config/luakit/lib/?.lua;"
+    .. os.getenv("HOME") .. "/.config/luakit/lib/?/init.lua;"
+    .. package.path
+
 -- Load library of useful functions for luakit
 require "lousy"
 
@@ -111,7 +120,7 @@ require "go_up"
 
 -- }}}
 
--- {{{ Overrides
+-- {{{ Custom
 
 require "speeddial"
 
@@ -135,9 +144,5 @@ else
 end
 
 -- }}}
-
-------------------------
--- End user overrides --
-------------------------
 
 -- vim: et:sw=4:ts=8:sts=4:tw=80
