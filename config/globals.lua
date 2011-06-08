@@ -56,13 +56,18 @@ soup.set_property("accept-language", "en; q=1.0, de; q=0.5")
 -- See: http://www.lua.org/manual/5.1/manual.html#pdf-string.format
 search_engines = {
     luakit      = "http://luakit.org/search/index/luakit?q=%s",
-    google      = "http://google.com/search?q=%s",
-    scroogle    = "https://ssl.scroogle.org/cgi-bin/nbbwssl.cgi?Gw=%s",
+    g           = "http://google.com/search?q=%s",
+    s           = "https://ssl.scroogle.org/cgi-bin/nbbwssl.cgi?Gw=%s",
+    dbugs       = "http://bugs.debian.org/%s",
+    deb         = "http://packages.debian.org/%s",
+    debs        = "http://packages.debian.org/src:%s",
+    dqa         = "http://packages.qa.debian.org/%s",
     duckduckgo  = "http://duckduckgo.com/?q=%s",
     wikipedia   = "http://en.wikipedia.org/wiki/Special:Search?search=%s",
-    debbugs     = "http://bugs.debian.org/%s",
     imdb        = "http://imdb.com/find?s=all&q=%s",
     sourceforge = "http://sf.net/search/?words=%s",
+    map         = "http://maps.google.com/maps?q=%s",
+    yt          = "http://www.youtube.com/results?search_query=%s&search_sort=video_view_count",
 }
 
 -- Set fallback / default search engine
@@ -72,12 +77,12 @@ search_engines.default = search_engines.scroogle
 
 -- Per-domain webview properties
 -- See http://webkitgtk.org/reference/webkitgtk-WebKitWebSettings.html
-domain_props = { --[[
+domain_props = {
     ["all"] = {
         ["enable-scripts"]          = false,
         ["enable-plugins"]          = false,
         ["enable-private-browsing"] = false,
-        ["user-stylesheet-uri"]     = "",
+        ["user-stylesheet-uri"]     = "file://" .. luakit.data_dir .. "/styles/dark.css",
     },
     ["youtube.com"] = {
         ["enable-scripts"] = true,
@@ -86,7 +91,7 @@ domain_props = { --[[
     ["bbs.archlinux.org"] = {
         ["user-stylesheet-uri"]     = "file://" .. luakit.data_dir .. "/styles/dark.css",
         ["enable-private-browsing"] = true,
-    }, ]]
+    },
 }
 
 -- vim: et:sw=4:ts=8:sts=4:tw=80
