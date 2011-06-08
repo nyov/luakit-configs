@@ -223,8 +223,8 @@ add_binds("normal", {
 
     -- Window
     buf("^ZZ$",                     function (w) w:save_session() w:close_win() end),
-    buf("^ZQ$",                     function (w) w:close_win() end),
-    buf("^D$",                      function (w) w:close_win() end),
+    buf("^ZQ$",                     function (w) w:save_session() w:close_win() end),
+    buf("^D$",                      function (w) w:save_session() w:close_win() end),
 
     -- Enter passthrough mode
     key({"Control"}, "z",           function (w) w:set_mode("passthrough") end),
@@ -283,7 +283,7 @@ add_cmds({
     cmd("w[inopen]",            function (w, a) window.new{w:search_open(a)} end),
     cmd({"javascript",   "js"}, function (w, a) w:eval_js(a, "javascript") end),
 
-    cmd("q[uit]",               function (w, a, o) w:close_win(o.bang) end),
+    cmd("q[uit]",               function (w, a, o) w:save_session() w:close_win(o.bang) end),
     cmd({"viewsource",  "vs" }, function (w, a, o) w:toggle_source(not o.bang and true or nil) end),
     cmd({"writequit", "wq"},    function (w, a, o) w:save_session() w:close_win(o.bang) end),
 
