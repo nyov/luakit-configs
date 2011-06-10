@@ -84,6 +84,24 @@ domain_props = {
         ["enable-plugins"]          = false,
         ["enable-private-browsing"] = false,
     },
+    -- local properties (luakit:// (chrome://), file:// uri's),
+    -- unless overridden by ["luakit"] or ["file"]
+    ["local"] = {
+        ["enable-scripts"]                    = true,
+        ["enable-plugins"]                    = true,
+        ["enable-file-access-from-file-uris"] = true, -- allow xmlhttprequest for file:// protocol
+        ["user-stylesheet-uri"]               = "file://" .. luakit.data_dir .. "/styles/nyov.css",
+    },
+    --[[
+    ["luakit"] = {
+        ["enable-scripts"]                    = true,
+    },
+    ["file"] = {
+        ["enable-scripts"]                    = true,
+    },
+    --]]
+    --[[
+    -- domain specific properties
     ["youtube.com"] = {
         ["enable-scripts"] = true,
         ["enable-plugins"] = true,
@@ -91,6 +109,7 @@ domain_props = {
     ["bbs.archlinux.org"] = {
         ["enable-private-browsing"] = true,
     },
+    --]]
 }
 
 -- vim: et:sw=4:ts=8:sts=4:tw=80

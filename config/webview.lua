@@ -158,12 +158,21 @@ webview.init_funcs = {
         view:add_signal("load-status", function (v, status)
             if status ~= "committed" or v.uri == "about:blank" then return end
             -- Get domain
-            local domain = lousy.uri.parse(v.uri).host
+            local uri = lousy.uri.parse(v.uri)
+            local domain = uri.host
             -- Strip leading www.
             domain = string.match(domain or "", "^www%.(.+)") or domain or "all"
             -- Build list of domain props tables to join & load.
             -- I.e. for luakit.org load .luakit.org, luakit.org, .org
-            local props = {domain_props.all or {}, domain_props[domain] or {}}
+            local all
+            if uri.scheme == "luakit" then
+                all = domain_props.luakit or domain_props["local"] or domain_props.all or {}
+            elseif uri.scheme == "file" then
+                all = domain_props.file   or domain_props["local"] or domain_props.all or {}
+            else
+                all = domain_props.all or {}
+            end
+            local props = { all, domain_props[domain] or {} }
             repeat
                 table.insert(props, 2, domain_props["."..domain] or {})
                 domain = string.match(domain, "%.(.+)")
