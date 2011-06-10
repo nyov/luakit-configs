@@ -55,13 +55,13 @@ soup.set_property("accept-language", "en; q=1.0, de; q=0.5")
 -- it to avoid collisions with lua's string.format characters.
 -- See: http://www.lua.org/manual/5.1/manual.html#pdf-string.format
 search_engines = {
-    luakit      = "http://luakit.org/search/index/luakit?q=%s",
     g           = "http://google.com/search?q=%s",
     s           = "https://ssl.scroogle.org/cgi-bin/nbbwssl.cgi?Gw=%s",
     dbugs       = "http://bugs.debian.org/%s",
     deb         = "http://packages.debian.org/%s",
     debs        = "http://packages.debian.org/src:%s",
     dqa         = "http://packages.qa.debian.org/%s",
+    lk          = "http://luakit.org/search/index/luakit?q=%s",
     duckduckgo  = "http://duckduckgo.com/?q=%s",
     wikipedia   = "http://en.wikipedia.org/wiki/Special:Search?search=%s",
     imdb        = "http://imdb.com/find?s=all&q=%s",
@@ -71,25 +71,24 @@ search_engines = {
 }
 
 -- Set fallback / default search engine
-search_engines.default = search_engines.scroogle
+search_engines.default = search_engines.s
 -- Use this instead to disable auto-searching
 --search_engines.default = "%s"
 
 -- Per-domain webview properties
 -- See http://webkitgtk.org/reference/webkitgtk-WebKitWebSettings.html
 domain_props = {
+    -- properties for everything, unless overridden
     ["all"] = {
         ["enable-scripts"]          = false,
         ["enable-plugins"]          = false,
         ["enable-private-browsing"] = false,
-        ["user-stylesheet-uri"]     = "file://" .. luakit.data_dir .. "/styles/dark.css",
     },
     ["youtube.com"] = {
         ["enable-scripts"] = true,
         ["enable-plugins"] = true,
     },
     ["bbs.archlinux.org"] = {
-        ["user-stylesheet-uri"]     = "file://" .. luakit.data_dir .. "/styles/dark.css",
         ["enable-private-browsing"] = true,
     },
 }

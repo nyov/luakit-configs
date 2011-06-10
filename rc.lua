@@ -147,4 +147,4 @@ end
 
 -- }}}
 
--- vim: et:sw=4:ts=8:sts=4:tw=80
+-- vim: et:sw=4:ts=8:sts=4:tw=80:filetype=lua:fdm=marker

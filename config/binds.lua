@@ -283,9 +283,12 @@ add_cmds({
     cmd("w[inopen]",            function (w, a) window.new{w:search_open(a)} end),
     cmd({"javascript",   "js"}, function (w, a) w:eval_js(a, "javascript") end),
 
+    -- rsget script
+    cmd({"rsget",        "dr"}, function (w, a) w:eval_js_from_file(lousy.util.find_data("scripts/rsget.js")) end),
+
     cmd("q[uit]",               function (w, a, o) w:save_session() w:close_win(o.bang) end),
-    cmd({"viewsource",  "vs" }, function (w, a, o) w:toggle_source(not o.bang and true or nil) end),
-    cmd({"writequit", "wq"},    function (w, a, o) w:save_session() w:close_win(o.bang) end),
+    cmd({"viewsource",   "vs"}, function (w, a, o) w:toggle_source(not o.bang and true or nil) end),
+    cmd({"writequit",    "wq"}, function (w, a, o) w:save_session() w:close_win(o.bang) end),
 
     cmd("lua", function (w, a)
         if a then

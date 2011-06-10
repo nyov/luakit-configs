@@ -11,7 +11,7 @@ local mogrify_opt  = "-extent 1024x768 -size 240x180 -resize 240x180"
 local html_template = [==[
 <html>
 <head>
-    <title>Speed Dial</title>
+    <title>nyov's luakit</title>
     <style type="text/css">
         body {
             background: #afafaf;
@@ -22,8 +22,9 @@ local html_template = [==[
             display:inline-block;
             width: 280;
             border: 1px solid black;
-            border-radius: 5px;
+            border-radius: 0 20px;
             padding-top: 10px;
+            margin-bottom: 30px;
             margin:8px;
             text-align: center;
 
@@ -39,8 +40,14 @@ local html_template = [==[
             border: 1px solid #909090;
         }
     </style>
+    <script type="text/javascript">
+        funcs = function() {
+            //alert('hello world');
+            //console.log('hello world');
+        }
+    </script>
 </head>
-<body>
+<body onload="funcs();">
 {favs}
 </body>
 </html>
@@ -88,3 +95,5 @@ chrome.add("favs/", function (view, uri)
 end)
 
 -- http://www.luakit.org/projects/luakit/wiki/Opera_Speed_Dial_like_chrome
+
+-- vim: et:sw=4:ts=8:sts=4:tw=80
