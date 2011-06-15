@@ -11,9 +11,9 @@ local sql_escape = lousy.util.sql_escape
 
 module "noscript"
 
--- Default enable values
-local enable_scripts = true
-local enable_plugins = true
+-- Default to disabled values
+local enable_scripts = false
+local enable_plugins = false
 
 db = capi.sqlite3{ filename = capi.luakit.data_dir .. "/noscript.db" }
 db:exec("PRAGMA synchronous = OFF; PRAGMA secure_delete = 1;")

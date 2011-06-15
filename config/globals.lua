@@ -81,33 +81,26 @@ search_engines.default = search_engines.s
 domain_props = {
     -- properties for everything, unless overridden
     ["all"] = {
-        ["enable-scripts"]          = false,
-        ["enable-plugins"]          = false,
+        -- removed globally for noscript plugin to work
+    --  ["enable-scripts"]          = false,
+    --  ["enable-plugins"]          = false,
         ["enable-private-browsing"] = false,
     },
     -- local properties (luakit:// (chrome://), file:// uri's),
-    -- unless overridden by ["luakit"] or ["file"]
+    -- unless overridden in ["luakit"] or ["file"] explicitly
     ["local"] = {
         ["enable-scripts"]                    = true,
         ["enable-plugins"]                    = true,
         ["enable-file-access-from-file-uris"] = true, -- allow xmlhttprequest for file:// protocol
         ["user-stylesheet-uri"]               = "file://" .. luakit.data_dir .. "/styles/nyov.css",
     },
-    --[[
-    ["luakit"] = {
-        ["enable-scripts"]                    = true,
-    },
-    ["file"] = {
-        ["enable-scripts"]                    = true,
-    },
-    --]]
     -- domain specific properties
     ["github.com"] = {
         ["enable-scripts"]          = true,
     },
     ["youtube.com"] = {
-        ["enable-scripts"] = true,
-        ["enable-plugins"] = true,
+        ["enable-scripts"]          = true,
+        ["enable-plugins"]          = true,
     },
 }
 

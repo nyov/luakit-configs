@@ -141,6 +141,8 @@ require "go_up"
 
 require "speeddial"
 
+require "noscript"
+
 -- }}}
 
 -----------------------------
