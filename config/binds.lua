@@ -180,7 +180,7 @@ add_binds("normal", {
     buf("^O$",                      function (w, c) w:enter_cmd(":open "    .. (w:get_current().uri or "")) end),
     buf("^T$",                      function (w, c) w:enter_cmd(":tabopen " .. (w:get_current().uri or "")) end),
     buf("^W$",                      function (w, c) w:enter_cmd(":winopen " .. (w:get_current().uri or "")) end),
-    buf("^,g$",                     function (w, c) w:enter_cmd(":open google ") end),
+    buf("^,g$",                     function (w, c) w:enter_cmd(":open s ") end),
 
     -- History
     key({},          "H",           function (w, m) w:back(m.count)    end),
@@ -228,6 +228,19 @@ add_binds("normal", {
 
     -- Enter passthrough mode
     key({"Control"}, "z",           function (w) w:set_mode("passthrough") end),
+
+    -- Custom settings
+    key({},          "F11",         function (w)    w:toggle_source() end),
+
+    key({},          "vv",          function (w)
+                                        local view = w:get_current()
+                                        local uri = view.hovered_uri or view.uri
+                                        if uri then
+                                            luakit.spawn(string.format("urxvt -e cclive -f best --filename-format '%%t.%%s' "
+                                                .. "--output-dir %q --exec='mplayer %%f' %q", os.getenv("HOME"), uri))
+                                        end
+                                    end),
+
 })
 
 add_binds("insert", {

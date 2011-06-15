@@ -47,7 +47,7 @@ cookie_policy = { always = 0, never = 1, no_third_party = 2 }
 soup.set_property("accept-policy", cookie_policy.always)
 
 -- Set default language
-soup.set_property("accept-language", "en; q=1.0, de; q=0.5")
+soup.set_property("accept-language", "en;q=1.0,de;q=0.5")
 
 -- List of search engines. Each item must contain a single %s which is
 -- replaced by URI encoded search terms. All other occurances of the percent
@@ -62,6 +62,7 @@ search_engines = {
     debs        = "http://packages.debian.org/src:%s",
     dqa         = "http://packages.qa.debian.org/%s",
     lk          = "http://luakit.org/search/index/luakit?q=%s",
+    gh          = "https://github.com/search?q=%s",
     duckduckgo  = "http://duckduckgo.com/?q=%s",
     wikipedia   = "http://en.wikipedia.org/wiki/Special:Search?search=%s",
     imdb        = "http://imdb.com/find?s=all&q=%s",
@@ -100,16 +101,14 @@ domain_props = {
         ["enable-scripts"]                    = true,
     },
     --]]
-    --[[
     -- domain specific properties
+    ["github.com"] = {
+        ["enable-scripts"]          = true,
+    },
     ["youtube.com"] = {
         ["enable-scripts"] = true,
         ["enable-plugins"] = true,
     },
-    ["bbs.archlinux.org"] = {
-        ["enable-private-browsing"] = true,
-    },
-    --]]
 }
 
 -- vim: et:sw=4:ts=8:sts=4:tw=80
