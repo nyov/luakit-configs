@@ -18,11 +18,12 @@ globals = {
 }
 
 -- Make useragent
-local arch = string.match(({luakit.spawn_sync("uname -sm")})[2], "([^\n]*)")
-local lkv  = string.format("luakit/%s", luakit.version)
-local wkv  = string.format("WebKitGTK+/%d.%d.%d", luakit.webkit_major_version, luakit.webkit_minor_version, luakit.webkit_micro_version)
-local awkv = string.format("AppleWebKit/%s.%s+", luakit.webkit_user_agent_major_version, luakit.webkit_user_agent_minor_version)
-globals.useragent = string.format("Mozilla/5.0 (%s) %s %s %s", arch, awkv, wkv, lkv)
+local _, arch = luakit.spawn_sync("uname -sm")
+-- Only use the luakit version if in date format (reduces identifiability)
+local lkv = string.match(luakit.version, "^(%d+.%d+.%d+)")
+globals.useragent = string.format("Mozilla/5.0 (%s) AppleWebKit/%s+ (KHTML, like Gecko) WebKitGTK+/%s luakit%s",
+    string.sub(arch, 1, -2), luakit.webkit_user_agent_version,
+    luakit.webkit_version, (lkv and ("/" .. lkv)) or "")
 
 -- Search common locations for a ca file which is used for ssl connection validation.
 local ca_files = {
@@ -34,20 +35,20 @@ local ca_files = {
 -- Use the first ca-file found
 for _, ca_file in ipairs(ca_files) do
     if os.exists(ca_file) then
-        soup.set_property("ssl-ca-file", ca_file)
+        soup.ssl_ca_file = ca_file
         break
     end
 end
 
 -- Change to stop navigation sites with invalid or expired ssl certificates
-soup.set_property("ssl-strict", false)
+soup.ssl_strict = false
 
 -- Set cookie acceptance policy
 cookie_policy = { always = 0, never = 1, no_third_party = 2 }
-soup.set_property("accept-policy", cookie_policy.always)
+soup.accept_policy = cookie_policy.always
 
 -- Set default language
-soup.set_property("accept-language", "en;q=1.0,de;q=0.5")
+soup.accept_language = "en;q=1.0,de;q=0.5"
 
 -- List of search engines. Each item must contain a single %s which is
 -- replaced by URI encoded search terms. All other occurances of the percent
@@ -56,18 +57,18 @@ soup.set_property("accept-language", "en;q=1.0,de;q=0.5")
 -- See: http://www.lua.org/manual/5.1/manual.html#pdf-string.format
 search_engines = {
     g           = "http://google.com/search?q=%s",
-    s           = "https://ssl.scroogle.org/cgi-bin/nbbwssl.cgi?Gw=%s",
-    dbugs       = "http://bugs.debian.org/%s",
-    deb         = "http://packages.debian.org/%s",
-    debs        = "http://packages.debian.org/src:%s",
-    dqa         = "http://packages.qa.debian.org/%s",
+    s           = "https://startpage.com/do/search?q=%s",
     lk          = "http://luakit.org/search/index/luakit?q=%s",
     gh          = "https://github.com/search?q=%s",
     duckduckgo  = "http://duckduckgo.com/?q=%s",
     wikipedia   = "http://en.wikipedia.org/wiki/Special:Search?search=%s",
+    debbugs     = "http://bugs.debian.org/%s",
+    deb         = "http://packages.debian.org/%s",
+    debs        = "http://packages.debian.org/src:%s",
+    dqa         = "http://packages.qa.debian.org/%s",
     imdb        = "http://imdb.com/find?s=all&q=%s",
     sourceforge = "http://sf.net/search/?words=%s",
-    map         = "http://maps.google.com/maps?q=%s",
+    gmaps       = "http://maps.google.com/maps?q=%s",
     yt          = "http://www.youtube.com/results?search_query=%s&search_sort=video_view_count",
 }
 
@@ -82,25 +83,30 @@ domain_props = {
     -- properties for everything, unless overridden
     ["all"] = {
         -- removed globally for noscript plugin to work
-    --  ["enable-scripts"]          = false,
-    --  ["enable-plugins"]          = false,
-        ["enable-private-browsing"] = false,
+    --  enable_scripts              = false,
+    --  enable_plugins              = false,
+        enable_private_browsing     = false,
+        user_stylesheet_uri         = "",
     },
     -- local properties (luakit:// (chrome://), file:// uri's),
     -- unless overridden in ["luakit"] or ["file"] explicitly
     ["local"] = {
-        ["enable-scripts"]                    = true,
-        ["enable-plugins"]                    = true,
-        ["enable-file-access-from-file-uris"] = true, -- allow xmlhttprequest for file:// protocol
-        ["user-stylesheet-uri"]               = "file://" .. luakit.data_dir .. "/styles/nyov.css",
+        enable_scripts                        = true,
+        enable_plugins                        = true,
+        enable_file_access_from_file_uris     = true, -- allow xmlhttprequest for file:// protocol
+        user_stylesheet_uri                   = "file://" .. luakit.data_dir .. "/styles/nyov.css",
     },
     -- domain specific properties
     ["github.com"] = {
-        ["enable-scripts"]          = true,
+        enable_scripts              = true,
     },
     ["youtube.com"] = {
-        ["enable-scripts"]          = true,
-        ["enable-plugins"]          = true,
+        enable_scripts              = true,
+        enable_plugins              = true,
+    },
+    ["bbs.archlinux.org"] = {
+        user_stylesheet_uri     = "file://" .. luakit.data_dir .. "/styles/dark.css",
+        enable_private_browsing = true,
     },
 }
 
