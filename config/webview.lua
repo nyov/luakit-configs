@@ -223,19 +223,19 @@ webview.init_funcs = {
 
     -- Creates context menu popup from table (and nested tables).
     -- Use `true` for menu separators.
-    populate_popup = function (view, w)
-        view:add_signal("populate-popup", function (v)
-            return {
-                true,
-                { "_Toggle Source", function () w:toggle_source() end },
-                { "_Zoom", {
-                    { "Zoom _In",    function () w:zoom_in()  end },
-                    { "Zoom _Out",   function () w:zoom_out() end },
-                    true,
-                    { "Zoom _Reset", function () w:zoom_set() end }, }, },
-            }
-        end)
-    end,
+    -- populate_popup = function (view, w)
+    --     view:add_signal("populate-popup", function (v)
+    --         return {
+    --             true,
+    --             { "_Toggle Source", function () w:toggle_source() end },
+    --             { "_Zoom", {
+    --                 { "Zoom _In",    function () w:zoom_in()  end },
+    --                 { "Zoom _Out",   function () w:zoom_out() end },
+    --                 true,
+    --                 { "Zoom _Reset", function () w:zoom_set() end }, }, },
+    --         }
+    --     end)
+    -- end,
 
     -- Action to take on resource request.
     resource_request_decision = function (view, w)
@@ -255,13 +255,13 @@ webview.init_funcs = {
 
                 -- use wget to download and cache the favicon, and look for its path
                 local _, _, wget_output = luakit.spawn_sync(string.format(
-                    "wget --timestamping --force-directories --protocol-directories"..
+                    "wget --timestamping --force-directories --protocol-directories" ..
                         " --directory-prefix=%q %q",
-                    luakit.cache_dir.."/favicon", favicon_url))
+                    luakit.cache_dir .. "/favicon", favicon_url))
 
                 -- the second-to-last line may contain the path wrapped in ` '
                 local lines = lousy.util.string.split(wget_output, "\n")
-                local path_line = lines[#lines - 2]
+                local path_line = lines[#lines - 2] or ""
                 local favicon_path = string.match(path_line, "`([^']+)'")
 
                 -- store the icon in a table
@@ -421,7 +421,7 @@ function webview.new(w)
     local view = widget{type = "webview"}
 
     -- Show scrollbars
-    view.show_scrollbars = true
+    view.show_scrollbars = false
 
     -- Call webview init functions
     for k, func in pairs(webview.init_funcs) do
